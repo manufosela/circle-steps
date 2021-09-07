@@ -1,26 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>circle-steps demo</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes"
+    />
     <script type="module" src="../circle-steps.js"></script>
     <style>
       .blocks {
-        display:flex;
-        flex-direction:row;
+        display: flex;
+        flex-direction: row;
         flex-wrap: wrap;
         margin-bottom: 4rem;
       }
       .block {
-        display:flex;
-        flex-direction:column;
+        display: flex;
+        flex-direction: column;
         flex-wrap: wrap;
         white-space: normal;
       }
       .code {
         padding: 20px;
-        color:#FFF; 
+        color: #fff;
         background: #000;
       }
       .attributes {
@@ -29,8 +32,8 @@
 
       form {
         display: flex;
-        align-items: center;  
-        justify-content: center;   
+        align-items: center;
+        justify-content: center;
       }
       form * {
         margin: 5px;
@@ -55,32 +58,46 @@
       </pre>
     </div>
 
-    <circle-steps id="myCircleStep1" width="800" active-mode='allLast'>
+    <circle-steps id="myCircleStep1" width="800" active-mode="allLast">
       <li name="one">Phase One used to first phase</li>
       <li name="two">Phase Two used to second phase</li>
       <li name="three">Phase Three used to third phase</li>
       <li name="four">Phase Four used to fourth phase</li>
       <li name="five">Phase Five used to fifth phase</li>
-      <li name="six">Phase Six used to sixth phase</li>
-      <li name="seven">Phase Seven used to seventh phase</li>    
+      <li name="six or something more to do large text">
+        Phase Six used to sixth phase
+      </li>
+      <li name="seven">Phase Seven used to seventh phase</li>
     </circle-steps>
 
-    <circle-steps id="myCircleStep2" width="600" active-mode='onexTime' change-mode="event">
+    <circle-steps
+      id="myCircleStep2"
+      width="600"
+      active-mode="onexTime"
+      change-mode="event"
+    >
       <li name="one">Phase One used to first phase</li>
       <li name="two">Phase Two used to second phase</li>
       <li name="three">Phase Three used to third phase</li>
       <li name="four">Phase Four used to fourth phase</li>
     </circle-steps>
     <form>
-      <label for="phase">Phase</label><input name="phase" id="phase" type="number" min="1" max="4"><button id="sendPhase">Send Phase</button>
+      <label for="phase">Phase</label
+      ><input name="phase" id="phase" type="number" min="1" max="4" /><button
+        id="sendPhase"
+      >
+        Send Phase
+      </button>
     </form>
     <script>
-      const btn = document.querySelector('#sendPhase');
-      btn.addEventListener('click', (ev) => {
+      const btn = document.querySelector("#sendPhase");
+      btn.addEventListener("click", (ev) => {
         ev.stopPropagation();
         ev.preventDefault();
-        const phase = document.querySelector('#phase').value; 
-        const myEvent = new CustomEvent('set-phase', {detail: {id:'myCircleStep2', phase}});
+        const phase = document.querySelector("#phase").value;
+        const myEvent = new CustomEvent("set-phase", {
+          detail: { id: "myCircleStep2", phase },
+        });
         document.dispatchEvent(myEvent);
       });
     </script>

@@ -32,53 +32,55 @@ class CircleSteps extends LitElement {
         display: block;
       }
       .process-model {
-          display: flex;
-          flex-direction: row;
-          flex-grow: 1;
-          justify-content: space-evenly;
-          list-style: none;
-          padding: 0;
-          position: relative;
-          margin: 0 auto;
-          border: none;
-          z-index: 0;
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+        justify-content: space-evenly;
+        list-style: none;
+        padding: 0;
+        position: relative;
+        margin: 0 auto;
+        border: none;
+        z-index: 0;
       }
       .process-model li::after {
-          background: #e5e5e5 none repeat scroll 0 0;
-          bottom: 0;
-          content: "";
-          display: block;
-          height: 4px;
-          margin: 0 auto;
-          position: absolute;
-          right: 0;
-          top: 33px;
-          width: 100%;
-          z-index: -1;
+        background: #e5e5e5 none repeat scroll 0 0;
+        bottom: 0;
+        content: "";
+        display: block;
+        height: 4px;
+        margin: 0 auto;
+        position: absolute;
+        right: 0;
+        top: 33px;
+        width: 100%;
+        z-index: -1;
       }
       .process-model li.visited::after {
-          background: #57b87b;
+        background: #57b87b;
       }
       .process-model li:last-child::after {
-          width: 0;
+        width: 0;
       }
       .process-model li {
-          text-align: center;
+        text-align: center;
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0;
       }
       .nav-tabs.process-model > li.active > a, .nav-tabs.process-model > li.active > a:hover, .nav-tabs.process-model > li.active > a:focus, .process-model li a:hover, .process-model li a:focus {
-          border: none;
-          background: transparent;
-
+        border: none;
+        background: transparent;
       }
       .process-model li a {
-          padding: 0;
-          border: none;
-          color: #606060;
-          text-decoration: none;
+        padding: 0;
+        border: none;
+        color: #606060;
+        text-decoration: none;
       }
       .process-model li.active,
       .process-model li.visited {
-          color: #57b87b;
+        color: #57b87b;
       }
       .process-model li.active a,
       .process-model li.active a:hover,
@@ -86,74 +88,72 @@ class CircleSteps extends LitElement {
       .process-model li.visited a,
       .process-model li.visited a:hover,
       .process-model li.visited a:focus {
-          color: #57b87b;
+        color: #57b87b;
       }
       .process-model li.active p,
       .process-model li.visited p {
-          font-weight: 600;
+        font-weight: 600;
       }
       .process-model li i {
-          display: block;
-          height: 68px;
-          width: 68px;
-          text-align: center;
-          margin: 0 auto;
-          background: #f5f6f7;
-          border: 2px solid #e5e5e5;
-          line-height: 65px;
-          font-size: 30px;
-          border-radius: 50%;
+        display: block;
+        height: 68px;
+        width: 68px;
+        text-align: center;
+        margin: 0 auto;
+        background: #f5f6f7;
+        border: 2px solid #e5e5e5;
+        line-height: 65px;
+        font-size: 30px;
+        border-radius: 50%;
       }
       .process-model li.active i, .process-model li.visited i  {
-          background: #fff;
-          border-color: #57b87b;
+        background: #fff;
+        border-color: #57b87b;
       }
       .process-model li p {
-          font-size: 14px;
-          margin-top: 11px;
+        font-size: 14px;
+        margin-top: 11px;
       }
       .process-model.contact-us-tab li.visited a, .process-model.contact-us-tab li.visited p {
-          color: #606060!important;
-          font-weight: normal
+        color: #606060!important;
+        font-weight: normal
       }
       .process-model.contact-us-tab li::after  {
-          display: none; 
+        display: none; 
       }
       .process-model.contact-us-tab li.visited i {
-          border-color: #e5e5e5; 
+        border-color: #e5e5e5; 
       }
-
-
 
       @media screen and (max-width: 560px) {
         .more-icon-preocess.process-model li span {
-              font-size: 23px;
-              height: 50px;
-              line-height: 46px;
-              width: 50px;
+            font-size: 23px;
+            height: 50px;
+            line-height: 46px;
+            width: 50px;
           }
           .more-icon-preocess.process-model li::after {
-              top: 24px;
+            top: 24px;
           }
       }
       @media screen and (max-width: 380px) { 
           .process-model.more-icon-preocess li {
-              width: 16%;
+            width: 16%;
           }
           .more-icon-preocess.process-model li span {
-              font-size: 16px;
-              height: 35px;
-              line-height: 32px;
-              width: 35px;
+            font-size: 16px;
+            height: 35px;
+            line-height: 32px;
+            width: 35px;
           }
           .more-icon-preocess.process-model li p {
-              font-size: 8px;
+            font-size: 8px;
           }
           .more-icon-preocess.process-model li::after {
-              top: 18px;
+            top: 18px;
           }
           .process-model.more-icon-preocess {
-              text-align: center;
+            text-align: center;
           }
       }
     `;
