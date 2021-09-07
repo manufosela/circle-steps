@@ -17,8 +17,12 @@ class CircleSteps extends LitElement {
 
   static get properties() {
     return {
-      property1: { type: String },
-      property2: { type: Number }
+      id: { type: String },
+      title: { type: String },
+      phases: { type: Array },
+      width: { type: Number },
+      changeMode: { type: String, attribute: 'change-mode' },
+      activeMode: { type: String, attribute: 'active-mode' },
     };
   }
 
@@ -27,36 +31,15 @@ class CircleSteps extends LitElement {
       :host {
         display: block;
       }
-      .design-process-section .text-align-center {
-          line-height: 25px;
-          margin-bottom: 12px;
-      }
-      .design-process-content {
-          border: 1px solid #e9e9e9;
-          position: relative;
-          padding: 16px 34% 30px 30px;
-      }
-      .design-process-content img {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          z-index: 0;
-          max-height: 100%;
-      }
-      .design-process-content h3 {
-          margin-bottom: 16px;
-      }
-      .design-process-content p {
-          line-height: 26px;
-          margin-bottom: 12px;
-      }
       .process-model {
+          display: flex;
+          flex-direction: row;
+          flex-grow: 1;
+          justify-content: space-evenly;
           list-style: none;
           padding: 0;
           position: relative;
-          max-width: 600px;
-          margin: 20px auto 26px;
+          margin: 0 auto;
           border: none;
           z-index: 0;
       }
@@ -68,9 +51,9 @@ class CircleSteps extends LitElement {
           height: 4px;
           margin: 0 auto;
           position: absolute;
-          right: -30px;
+          right: 0;
           top: 33px;
-          width: 85%;
+          width: 100%;
           z-index: -1;
       }
       .process-model li.visited::after {
@@ -80,10 +63,7 @@ class CircleSteps extends LitElement {
           width: 0;
       }
       .process-model li {
-          display: inline-block;
-          width: 18%;
           text-align: center;
-          float: none;
       }
       .nav-tabs.process-model > li.active > a, .nav-tabs.process-model > li.active > a:hover, .nav-tabs.process-model > li.active > a:focus, .process-model li a:hover, .process-model li a:focus {
           border: none;
@@ -94,6 +74,7 @@ class CircleSteps extends LitElement {
           padding: 0;
           border: none;
           color: #606060;
+          text-decoration: none;
       }
       .process-model li.active,
       .process-model li.visited {
@@ -180,87 +161,74 @@ class CircleSteps extends LitElement {
   
   constructor() {
     super();
-    this.property1 = 'Year';
-    this.property2 = 2019;
+    this.id = `circleStep-${new Date().getTime()}`;
+    this.title = 'Circle Steps';
+    this.phases = ['one', 'two', 'three', 'four', 'five', 'six'];
+    this.width = 600;
+    this.active = 1;
+    this.changeMode = 'click'; // 'click' or 'event'
+    this.activeMode = 'onexTime'; // 'onexTime' or 'allLast'
+
+    document.addEventListener('set-phase', (e) => {
+      if (e.detail.id === this.id) { 
+        const target = this.shadowRoot.querySelector(`.process-model li[data-id="${e.detail.phase}"] a`);
+        this._newPhase(target);
+      }
+    });
   }
 
-  firstUpdated() {
-    this.shadowRoot.querySelectorAll('a[data-toggle="tab"]').forEach(el => {
-      el.addEventListener('click', e => {
-        var href = e.target.parentElement.getAttribute('href');
-        var $curr = this.shadowRoot.querySelector('.process-model  a[href=\'' + href + '\']').parentElement;
-
-        this.shadowRoot.querySelector('.process-model li').classList.remove();
-
-        $curr.classList.add('active');
-        // TODO: metodo prevAll y condición si quiere que funcione marcando los anteriores o solamente el activo
-        //$curr.prevAll().addClass('visited');
-      });
+  connectedCallback() {
+    super.connectedCallback();
+    const $lis = [...this.querySelectorAll('li')];
+    this.phases = $lis.map(item => {
+      return item.getAttribute('name');
     });
+    this.phaseTexts = $lis.map(item => {
+      return item.innerText;
+    });
+  } 
+
+  firstUpdated() {
+    if (this.changeMode === 'click') {
+      this.shadowRoot.querySelectorAll('a[data-toggle="tab"]').forEach(el => {
+        el.addEventListener('click', e => {
+          const target = e.target.parentElement;
+          this._newPhase(target);
+        });
+      });
+    } else {
+      this.shadowRoot.querySelectorAll('a[data-toggle="tab"]').forEach(el => {
+        el.style.cursor = 'default';
+      });
+    }
+  }
+
+  _newPhase(target) {
+    const href = target.getAttribute('href');
+    const dataId = target.parentElement.dataset.id;
+    const $curr = this.shadowRoot.querySelector('.process-model  a[href=\'' + href + '\']').parentElement;
+    if (this.activeMode === 'onexTime') {
+      this.shadowRoot.querySelector('.process-model li.active').classList.remove('active');
+    } else {
+      [...this.shadowRoot.querySelectorAll('.process-model li')].forEach(el => { el.classList.add('active'); });
+      [...this.shadowRoot.querySelectorAll(`.process-model li[data-id="${dataId}"] ~ li`)].forEach((el) => { el.classList.remove('active'); });
+    }
+    $curr.classList.add('active');
+    this.active = Number(dataId); 
+    this.dispatchEvent(new CustomEvent('change', { detail: { el:'circle-steps', id: this.id, active: this.active, phase: this.phases[this.active] } }));
   }
 
   render() {
     return html`
-      <section class="design-process-section" id="process-tab">
-        <div class="container">
-          <div class="row">
-            <div class="col-xs-12"> 
-              <!-- design process steps--> 
-              <!-- Nav tabs -->
-              <ul class="nav nav-tabs process-model more-icon-preocess" role="tablist">
-                <li role="presentation" class="active"><a href="#discover" aria-controls="discover" role="tab" data-toggle="tab"><i class="fa fa-search" aria-hidden="true"></i>
-                  <p>Discover</p>
-                  </a></li>
-                <li role="presentation"><a href="#strategy" aria-controls="strategy" role="tab" data-toggle="tab"><i class="fa fa-send-o" aria-hidden="true"></i>
-                  <p>Strategy</p>
-                  </a></li>
-                <li role="presentation"><a href="#optimization" aria-controls="optimization" role="tab" data-toggle="tab"><i class="fa fa-qrcode" aria-hidden="true"></i>
-                  <p>Optimization</p>
-                  </a></li>
-                <li role="presentation"><a href="#content" aria-controls="content" role="tab" data-toggle="tab"><i class="fa fa-newspaper-o" aria-hidden="true"></i>
-                  <p>Content</p>
-                  </a></li>
-                <li role="presentation"><a href="#reporting" aria-controls="reporting" role="tab" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i>
-                  <p>Reporting</p>
-                  </a></li>
-              </ul>
-              <!-- end design process steps--> 
-              <!-- Tab panes -->
-              <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="discover">
-                  <div class="design-process-content">
-                    <h3 class="semi-bold">Discovery</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincid unt ut laoreet dolore magna aliquam erat volutpat</p>
-                  </div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="strategy">
-                  <div class="design-process-content">
-                    <h3 class="semi-bold">Strategy</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincid unt ut laoreet dolore magna aliquam erat volutpat</p>
-                    </div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="optimization">
-                  <div class="design-process-content">
-                    <h3 class="semi-bold">Optimization</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincid unt ut laoreet dolore magna aliquam erat volutpat</p>
-                    </div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="content">
-                  <div class="design-process-content">
-                    <h3 class="semi-bold">Content</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincid unt ut laoreet dolore magna aliquam erat volutpat</p>              
-                    </div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="reporting">
-                  <div class="design-process-content">
-                    <h3>Reporting</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincid unt ut laoreet dolore magna aliquam erat volutpat. </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ul class="nav nav-tabs process-model more-icon-preocess" role="tablist" style="width:${this.width}px">
+        ${this.phases.map((phase, index) => html`
+          <li role="presentation" data-id="${index+1}" class="${(this.active===index+1) ? 'active' : ''}">
+            <a href="#${phase}" aria-controls="discover" role="tab" data-toggle="tab" title="${this.phaseTexts[index]}">
+              <i aria-hidden="true">${index + 1}</i>
+              <p>${phase}</p>
+            </a>
+          </li>`)}
+      </ul>
     `;
   }
 }

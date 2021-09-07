@@ -8,12 +8,13 @@
     <style>
       .blocks {
         display:flex;
-        display-direction:row;
+        flex-direction:row;
         flex-wrap: wrap;
+        margin-bottom: 4rem;
       }
       .block {
         display:flex;
-        display-direction:column;
+        flex-direction:column;
         flex-wrap: wrap;
         white-space: normal;
       }
@@ -25,28 +26,63 @@
       .attributes {
         padding-left: 20px;
       }
+
+      form {
+        display: flex;
+        align-items: center;  
+        justify-content: center;   
+      }
+      form * {
+        margin: 5px;
+      }
     </style>
   </head>
 
   <body>
-    <div class="vertical-section-container centered">
-      <h3>Basic circle-steps Demo</h3>
-      <div class="blocks">
-        <pre class="block code">
-          <code>
-            &lt;circle-steps&gt;&lt;/circle-steps&gt;
-          </code>
-        </pre>
-        <pre class="block attributes">
-          <h3>Attributes</h3>
-          <ul>
-            <li>property1 (String)</li>
-            <li>property2 (Number)</li>
-          </ul>
-        </pre>
-      </div>
-
-      <circle-steps></circle-steps>
+    <h3>Basic circle-steps Demo</h3>
+    <div class="blocks">
+      <pre class="block code">
+        <code>
+          &lt;circle-steps&gt;&lt;/circle-steps&gt;
+        </code>
+      </pre>
+      <pre class="block attributes">
+        <h3>Attributes</h3>
+        <ul>
+          <li>property1 (String)</li>
+          <li>property2 (Number)</li>
+        </ul>
+      </pre>
     </div>
+
+    <circle-steps id="myCircleStep1" width="800" active-mode='allLast'>
+      <li name="one">Phase One used to first phase</li>
+      <li name="two">Phase Two used to second phase</li>
+      <li name="three">Phase Three used to third phase</li>
+      <li name="four">Phase Four used to fourth phase</li>
+      <li name="five">Phase Five used to fifth phase</li>
+      <li name="six">Phase Six used to sixth phase</li>
+      <li name="seven">Phase Seven used to seventh phase</li>    
+    </circle-steps>
+
+    <circle-steps id="myCircleStep2" width="600" active-mode='onexTime' change-mode="event">
+      <li name="one">Phase One used to first phase</li>
+      <li name="two">Phase Two used to second phase</li>
+      <li name="three">Phase Three used to third phase</li>
+      <li name="four">Phase Four used to fourth phase</li>
+    </circle-steps>
+    <form>
+      <label for="phase">Phase</label><input name="phase" id="phase" type="number" min="1" max="4"><button id="sendPhase">Send Phase</button>
+    </form>
+    <script>
+      const btn = document.querySelector('#sendPhase');
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        ev.preventDefault();
+        const phase = document.querySelector('#phase').value; 
+        const myEvent = new CustomEvent('set-phase', {detail: {id:'myCircleStep2', phase}});
+        document.dispatchEvent(myEvent);
+      });
+    </script>
   </body>
 </html>
