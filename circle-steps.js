@@ -217,20 +217,26 @@ class CircleSteps extends LitElement {
 
   _eventHover(e) {
     const target = e.target.parentElement;
-    const eventHoverCircle = new CustomEvent('hover-circle', { detail: { el:'circle-steps', id: this.id, active: this.active, phase: target.dataset.phase, index: target.dataset.index } })
-    document.dispatchEvent(eventHoverCircle);
+    if (target.dataset.index !== undefined) {
+      const eventHoverCircle = new CustomEvent('hover-circle', { detail: { el:'circle-steps', id: this.id, active: this.active, phase: target.dataset.phase, index: target.dataset.index } })
+      document.dispatchEvent(eventHoverCircle);
+    }
   }
 
   _eventOut(e) {
     const target = e.target.parentElement;
-    const eventOutCircle = new CustomEvent('out-circle', { detail: { el:'circle-steps', id: this.id, active: this.active, phase: target.dataset.phase, index: target.dataset.index } })
-    document.dispatchEvent(eventOutCircle);
+    if (target.dataset.index !== undefined) {
+      const eventOutCircle = new CustomEvent('out-circle', { detail: { el:'circle-steps', id: this.id, active: this.active, phase: target.dataset.phase, index: target.dataset.index } })
+      document.dispatchEvent(eventOutCircle);
+    }
   }
 
   _eventSelect(e) {
     const target = e.target.parentElement;
-    const eventSelectCircle = new CustomEvent('select-circle', { detail: { el:'circle-steps', id: this.id, active: this.active, phase: target.dataset.phase, index: target.dataset.index } })
-    document.dispatchEvent(eventSelectCircle);
+    if (target.dataset.index !== undefined) {
+      const eventSelectCircle = new CustomEvent('select-circle', { detail: { el:'circle-steps', id: this.id, active: this.active, phase: target.dataset.phase, index: target.dataset.index } })
+      document.dispatchEvent(eventSelectCircle);
+    }
   }
 
   _newPhase(target) {
