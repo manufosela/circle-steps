@@ -197,7 +197,7 @@ class CircleSteps extends LitElement {
       this.shadowRoot.querySelectorAll('a[data-toggle="tab"]').forEach(el => {
         el.style.cursor = 'default';
         el.addEventListener('mouseover', this._eventHover.bind(this));
-        el.addEventListener('mouseoot', this._eventOut.bind(this));
+        el.addEventListener('mouseout', this._eventOut.bind(this));
         el.addEventListener('click', this._eventSelect.bind(this));
       });
     }
