@@ -251,7 +251,7 @@ class CircleSteps extends LitElement {
     }
     $curr.classList.add('active');
     this.active = Number(dataId); 
-    document.dispatchEvent(new CustomEvent('change', { detail: { el:'circle-steps', id: this.id, active: this.active, phase: this.phases[this.active] } }));
+    document.dispatchEvent(new CustomEvent('onchange-phase', { detail: { el:'circle-steps', id: this.id, active: this.active, phase: this.phases[this.active] } }));
   }
 
   render() {
