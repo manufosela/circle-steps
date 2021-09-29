@@ -179,6 +179,7 @@ class CircleSteps extends LitElement {
       return item.getAttribute('name');
     });
     this.phaseTexts = $lis.map(item => {
+      console.log(item.dataset.inactive);
       return item.innerText;
     });
   } 
